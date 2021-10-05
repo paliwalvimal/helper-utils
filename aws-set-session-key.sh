@@ -4,8 +4,12 @@
 SESSION_DURATION=3600
 
 print_help() {
-  echo '''Usage: source ./aws-set-session-key.sh --set --mfa-arn AWS_MFA_ARN --mfa-code 000000 [--duration 3600] [--profile AWS_CLI_PROFILE]
-       source ./aws-set-session-key.sh --unset'''
+  echo '''
+Syntax
+==================
+Set credentials:    source ./aws-set-session-key.sh --mfa-arn AWS_MFA_ARN --mfa-code 000000 [--duration 3600] [--profile AWS_CLI_PROFILE]
+Unset credentials:  source ./aws-set-session-key.sh --unset
+=================='''
 }
 
 set_session_key() {
@@ -52,16 +56,11 @@ while [[ $# -gt 0 ]]; do
   case $key in
     -h|--help)
       print_help
-      export AWS_SESSION_TOKEN=t
       return 0
       ;;
     --unset)
       unset_aws_session
       return 0
-      ;;
-    --set)
-      IS_SET_OPERATION=y
-      shift
       ;;
     --mfa-arn)
       [[ -z ${2} || ${2} =~ "--" ]] && echo "MFA ARN value cannot be empty" && return 1
